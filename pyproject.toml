@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multilang-probe"
+version = "0.1.0"
+description = "A Python package for analyzing multilingual text."
+authors = [
+  { name = "Florian Cafiero", email = "florian.cafiero@chartes.psl.eu" }
+]
+license = "MIT"
+classifiers = [
+  "Programming Language :: Python :: 3"
+]
+dependencies = [
+  "fasttext",
+  "regex"
+]
