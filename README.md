@@ -15,8 +15,33 @@ Whether you are analyzing large corpora or extracting specific language data, **
 - Uses `regex` with Unicode script properties (`\p{Script}`) for more accurate classification.
 - Special handling for Japanese vs Chinese characters (Han script).
 
+#### Example: Character Detection
+```python
+from charlang_detect.character_detection import classify_text_with_proportions
+
+text = "これは日本語と English です。"
+proportions = classify_text_with_proportions(text)
+print(proportions)
+# Possible output:
+# {"japanese": 50.0, "latin": 50.0}
+```
+
+**Explanation**:  
+- If the text contains Hiragana/Katakana, Han characters are considered Japanese Kanji.  
+- Otherwise, Han characters are considered Chinese.  
+
 ### Language Detection:
 - Identify top languages in text using Facebook's FastText pre-trained model.
+
+#### Example: Language Detection
+```python
+from charlang_detect.language_detection import detect_language_fasttext
+
+text = "Ceci est un texte en français."
+languages = detect_language_fasttext(text)
+print(languages)
+# Output example: "fr: 99.2%, en: 0.8%"
+```
 
 ### Corpus Analysis:
 - Analyze all `.txt` files in a folder to detect multilingual passages and language distributions.
