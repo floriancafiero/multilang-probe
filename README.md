@@ -1,6 +1,6 @@
 # multilang-probe
 
-**A Python package for detecting non-Latin characters and analyzing multilingual text.**
+**A Python package for analyzing multilingual text.**
 
 ---
 
