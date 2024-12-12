@@ -19,67 +19,13 @@ Whether you are analyzing large corpora or extracting specific language data, **
 - Identify top languages in text using Facebook's FastText pre-trained model.
 
 ### Corpus Analysis:
-- Detect multilingual passages in large corpora.
-- Filter text by specific languages or character sets.
-- Extract targeted text based on confidence thresholds.
+- Analyze all `.txt` files in a folder to detect multilingual passages and language distributions.
+- **Character-based filtering**: Identify and filter text lines containing specific character sets (e.g., Japanese, Cyrillic, Arabic).
+- **Language-based filtering**: Extract passages in a specific language, with customizable confidence thresholds (e.g., 70%).
+- **Targeted extraction**: Extract lines of text meeting both minimum length requirements and language detection accuracy.
+- **Calculate language proportions**: Aggregate detected languages across files and calculate their proportions.
 
-## Installation
-
-Ensure you have Python >= 3.7 installed.
-
-Clone the repository:
-```bash
-git clone https://github.com/yourusername/multilang-probe.git
-cd multilang-probe
-```
-
-Install the package:
-```bash
-pip install .
-```
-
-Install dependencies manually if needed:
-```bash
-pip install fasttext regex
-```
-
-**Note**: The `regex` module is required because the standard `re` module does not support `\p{Script}` properties.
-
-Download the FastText language detection model:
-```bash
-wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
-```
-
-## Usage
-
-### 1. Character Detection
-```python
-from charlang_detect.character_detection import classify_text_with_proportions
-
-text = "これは日本語と English です。"
-proportions = classify_text_with_proportions(text)
-print(proportions)
-# Possible output:
-# {"japanese": 50.0, "latin": 50.0}
-```
-
-**Explanation**:  
-- If the text contains Hiragana/Katakana, Han characters are considered Japanese Kanji.  
-- Otherwise, Han characters are considered Chinese.  
-- The output keys may differ from older versions; for example, "cyrillic" instead of "russe", "latin" instead of "latin étendu", etc.
-
-### 2. Language Detection
-```python
-from charlang_detect.language_detection import detect_language_fasttext
-
-text = "Ceci est un texte en français."
-languages = detect_language_fasttext(text)
-print(languages)
-# Output example: "fr: 99.2%, en: 0.8%"
-```
-
-### 3. Corpus Analysis
-Analyze all `.txt` files in a folder to detect multilingual passages:
+#### Example: Analyze and Detect Multilingual Passages
 ```python
 from charlang_detect.corpus_analysis import analyze_corpus_with_fasttext
 
@@ -87,6 +33,29 @@ folder_path = "path/to/corpus/"
 results = analyze_corpus_with_fasttext(folder_path)
 for filename, langs in results.items():
     print(filename, langs)
+```
+
+#### Example: Filter Passages by Character Types
+```python
+from charlang_detect.corpus_analysis import filter_passages_by_character_types
+
+folder_path = "path/to/corpus/"
+character_types = ["japanese", "cyrillic"]
+filtered = filter_passages_by_character_types(folder_path, character_types)
+for filename, passages in filtered.items():
+    print(filename, passages)
+```
+
+#### Example: Extract Passages by Language with Threshold
+```python
+from charlang_detect.corpus_analysis import filter_passages_by_language
+
+folder_path = "path/to/corpus/"
+target_languages = ["fr", "en"]
+threshold = 70
+filtered = filter_passages_by_language(results, target_languages, folder_path, threshold)
+for filename, passages in filtered.items():
+    print(filename, passages)
 ```
 
 ## Supported Character Sets
