@@ -15,5 +15,6 @@ classifiers = [
 ]
 dependencies = [
     "fasttext>=0.8.20,<0.9.0",  # Compatible avec toutes les versions mineures de 0.8
-    "pybind11>=2.2"             # Version minimale requise
+    "pybind11>=2.2",            # Version minimale requise
+    "regex>=2021.8.3"  
 ]
