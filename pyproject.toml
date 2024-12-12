@@ -10,6 +10,7 @@ authors = [
   { name = "Florian Cafiero", email = "florian.cafiero@chartes.psl.eu" }
 ]
 license = { text = "MIT" }
+readme = { file = "README.md", content-type = "text/markdown" }
 classifiers = [
   "Programming Language :: Python :: 3"
 ]
