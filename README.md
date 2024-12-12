@@ -94,7 +94,8 @@ for filename, passages in filtered.items():
 - Greek
 - Latin (basic and extended)
 - Devanagari (e.g., Hindi, Sanskrit)
-- Tamil, Bengali, Thai, and many more (extendable via Unicode scripts)
+- Tamil, Bengali, Thai
+- Extendable via Unicode scripts
 - "other" category for characters not belonging to known scripts
 
 ## Dependencies
