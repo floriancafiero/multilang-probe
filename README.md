@@ -96,7 +96,7 @@ for filename, langs in results.items():
 ## **Supported Character Sets**
 
 - Japanese (Hiragana, Katakana)  
-- Kanji  
+- Kanji (with contextual disambiguation between Chinese and Japanese)
 - Cyrillic (Russian, Bulgarian)  
 - Arabic  
 - Hebrew  
