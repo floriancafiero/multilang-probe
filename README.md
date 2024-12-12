@@ -116,7 +116,7 @@ for filename, langs in results.items():
 
 ## **License**
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. While the MIT License allows unrestricted use, modification, and distribution of this software, I kindly request that proper credit be given when this project is used in academic, research, or published work. For citation purposes, please refer to the following: CAFIERO Florian, 'multilang-probe', 2024, [https://github.com/floriancafiero/multilang-probe].
 
 ---
 
