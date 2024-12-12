@@ -9,7 +9,7 @@ description = "A Python package for analyzing multilingual text."
 authors = [
   { name = "Florian Cafiero", email = "florian.cafiero@chartes.psl.eu" }
 ]
-license = "MIT"
+license = { text = "MIT" }
 classifiers = [
   "Programming Language :: Python :: 3"
 ]
