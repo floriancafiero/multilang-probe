@@ -125,5 +125,6 @@ Email: florian.cafiero@chartes.psl.eu
 ## Future Features
 
 - Support for other pre-trained language models (e.g., spaCy).
+- Detection of mathematical language
 - Visualization tools for multilingual analysis.
 - CLI (Command-Line Interface) for easy usage without writing code.
