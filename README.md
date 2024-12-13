@@ -1,9 +1,6 @@
 # multilang-probe
 
 A Python package for analyzing multilingual text.
-
-## DOI
-
 [![DOI](https://zenodo.org/badge/902241265.svg)](https://doi.org/10.5281/zenodo.14437170)
 
 
