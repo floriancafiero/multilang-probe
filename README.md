@@ -64,14 +64,26 @@ for filename, langs in results.items():
 
 #### Example: Filter Passages by Character Types
 ```python
-from charlang_detect.corpus_analysis import filter_passages_by_character_types
+from multilang_probe.character_detection import classify_text_with_proportions
 
-folder_path = "path/to/corpus/"
-character_types = ["japanese", "cyrillic"]
-filtered = filter_passages_by_character_types(folder_path, character_types)
-for filename, passages in filtered.items():
-    print(filename, passages)
+# Sample text with multiple languages/scripts
+text = "これは日本語です。Привет мир! Ελληνικά και हिन्दी।"
+
+# Classify the text
+proportions = classify_text_with_proportions(text)
+
+# Print the proportions
+print("Character script proportions:")
+print(proportions)
 ```
+Expected outcome:
+
+```plaintext
+Character script proportions:
+{'japanese': 19.51, 'cyrillic': 21.95, 'greek': 26.83, 'devanagari': 14.63, 'other': 17.07}
+```
+
+
 
 #### Example: Extract Passages by Language with Threshold
 ```python
