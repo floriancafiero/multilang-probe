@@ -18,15 +18,27 @@ Whether you are analyzing large corpora or extracting specific language data, **
 - Special handling for Japanese vs Chinese characters (Han script).
 
 #### Example: Character Detection
-```python
-from charlang_detect.character_detection import classify_text_with_proportions
 
-text = "これは日本語と English です。"
+```python
+from multilang_probe.character_detection import classify_text_with_proportions
+
+# Sample text with multiple languages/scripts
+text = "これは日本語です。Привет мир! Ελληνικά και हिन्दी।"
+
+# Classify the text
 proportions = classify_text_with_proportions(text)
+
+# Print the proportions
+print("Character script proportions:")
 print(proportions)
-# Possible output:
-# {"japanese": 50.0, "latin": 50.0}
 ```
+Expected outcome:
+
+```plaintext
+Character script proportions:
+{'japanese': 19.51, 'cyrillic': 21.95, 'greek': 26.83, 'devanagari': 14.63, 'other': 17.07}
+```
+
 
 **Explanation**:  
 - If the text contains Hiragana/Katakana, Han characters are considered Japanese Kanji.  
@@ -63,25 +75,6 @@ for filename, langs in results.items():
 ```
 
 #### Example: Filter Passages by Character Types
-```python
-from multilang_probe.character_detection import classify_text_with_proportions
-
-# Sample text with multiple languages/scripts
-text = "これは日本語です。Привет мир! Ελληνικά και हिन्दी।"
-
-# Classify the text
-proportions = classify_text_with_proportions(text)
-
-# Print the proportions
-print("Character script proportions:")
-print(proportions)
-```
-Expected outcome:
-
-```plaintext
-Character script proportions:
-{'japanese': 19.51, 'cyrillic': 21.95, 'greek': 26.83, 'devanagari': 14.63, 'other': 17.07}
-```
 
 
 
