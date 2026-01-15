@@ -19,10 +19,15 @@ def _load_model(model_path):
     return fasttext.load_model(str(path))
 
 
-def detect_language_fasttext(text, k=2, model_path=None):
-    # Remplacer les retours à la ligne par des espaces
+def detect_language_fasttext_with_probs(text, k=2, model_path=None):
     resolved_model_path = model_path or os.environ.get(ENV_MODEL_PATH, DEFAULT_MODEL_PATH)
-    predictions = _load_model(resolved_model_path).predict(text.replace('\n', ' '), k=k)
-    langs = [f"{lang.replace('__label__', '')}: {round(prob * 100, 2)}%"
-             for lang, prob in zip(predictions[0], predictions[1])]
-    return ", ".join(langs)
+    labels, probs = _load_model(resolved_model_path).predict(text.replace('\n', ' '), k=k)
+    return [
+        (label.replace("__label__", ""), round(prob * 100, 2))
+        for label, prob in zip(labels, probs)
+    ]
+
+
+def detect_language_fasttext(text, k=2, model_path=None):
+    langs = detect_language_fasttext_with_probs(text, k=k, model_path=model_path)
+    return ", ".join(f"{lang}: {prob}%" for lang, prob in langs)

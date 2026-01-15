@@ -105,6 +105,18 @@ def build_parser():
     visualize_languages_parser.add_argument("--title", help="Plot title.")
     visualize_languages_parser.add_argument("--k", type=int, default=2, help="Top-k languages.")
     visualize_languages_parser.add_argument(
+        "--min-length",
+        type=int,
+        default=1,
+        help="Minimum block length for language detection.",
+    )
+    visualize_languages_parser.add_argument(
+        "--block-size",
+        type=int,
+        default=1,
+        help="Number of non-empty lines to merge per detection.",
+    )
+    visualize_languages_parser.add_argument(
         "--model-path", help="Path to lid.176.bin (or set MULTILANG_PROBE_MODEL_PATH)."
     )
 
@@ -113,6 +125,18 @@ def build_parser():
     )
     corpus_parser.add_argument("--folder", required=True, help="Corpus folder path.")
     corpus_parser.add_argument("--k", type=int, default=2, help="Top-k languages.")
+    corpus_parser.add_argument(
+        "--min-length",
+        type=int,
+        default=1,
+        help="Minimum block length for language detection.",
+    )
+    corpus_parser.add_argument(
+        "--block-size",
+        type=int,
+        default=1,
+        help="Number of non-empty lines to merge per detection.",
+    )
     corpus_parser.add_argument(
         "--model-path", help="Path to lid.176.bin (or set MULTILANG_PROBE_MODEL_PATH)."
     )
@@ -123,6 +147,18 @@ def build_parser():
     )
     proportions_parser.add_argument("--folder", required=True, help="Corpus folder path.")
     proportions_parser.add_argument("--k", type=int, default=2, help="Top-k languages.")
+    proportions_parser.add_argument(
+        "--min-length",
+        type=int,
+        default=1,
+        help="Minimum block length for language detection.",
+    )
+    proportions_parser.add_argument(
+        "--block-size",
+        type=int,
+        default=1,
+        help="Number of non-empty lines to merge per detection.",
+    )
     proportions_parser.add_argument(
         "--model-path", help="Path to lid.176.bin (or set MULTILANG_PROBE_MODEL_PATH)."
     )
@@ -153,6 +189,12 @@ def build_parser():
         "--threshold", type=float, default=70, help="Confidence threshold (0-100)."
     )
     filter_lang_parser.add_argument(
+        "--min-margin",
+        type=float,
+        default=0,
+        help="Minimum probability margin between top-1 and top-2 predictions.",
+    )
+    filter_lang_parser.add_argument(
         "--min-length", type=int, default=10, help="Minimum line length."
     )
     filter_lang_parser.add_argument("--k", type=int, default=2, help="Top-k languages.")
@@ -167,6 +209,12 @@ def build_parser():
     extract_parser.add_argument("--language", required=True, help="Target language code.")
     extract_parser.add_argument(
         "--threshold", type=float, default=70, help="Confidence threshold (0-100)."
+    )
+    extract_parser.add_argument(
+        "--min-margin",
+        type=float,
+        default=0,
+        help="Minimum probability margin between top-1 and top-2 predictions.",
     )
     extract_parser.add_argument(
         "--min-length", type=int, default=10, help="Minimum line length."
@@ -210,7 +258,11 @@ def main():
 
     if args.command == "visualize-languages":
         results = analyze_corpus_with_fasttext(
-            args.folder, k=args.k, model_path=args.model_path
+            args.folder,
+            k=args.k,
+            model_path=args.model_path,
+            min_length=args.min_length,
+            block_size=args.block_size,
         )
         proportions_by_file = calculate_language_proportions(results)
         if args.file:
@@ -225,14 +277,22 @@ def main():
 
     if args.command == "analyze-corpus":
         results = analyze_corpus_with_fasttext(
-            args.folder, k=args.k, model_path=args.model_path
+            args.folder,
+            k=args.k,
+            model_path=args.model_path,
+            min_length=args.min_length,
+            block_size=args.block_size,
         )
         _print_json(results)
         return
 
     if args.command == "language-proportions":
         results = analyze_corpus_with_fasttext(
-            args.folder, k=args.k, model_path=args.model_path
+            args.folder,
+            k=args.k,
+            model_path=args.model_path,
+            min_length=args.min_length,
+            block_size=args.block_size,
         )
         _print_json(calculate_language_proportions(results))
         return
@@ -257,6 +317,7 @@ def main():
                 languages,
                 args.folder,
                 threshold=args.threshold,
+                min_margin=args.min_margin,
                 min_length=args.min_length,
                 k=args.k,
                 model_path=args.model_path,
@@ -274,6 +335,7 @@ def main():
                 args.language,
                 args.folder,
                 threshold=args.threshold,
+                min_margin=args.min_margin,
                 min_length=args.min_length,
                 k=args.k,
                 model_path=args.model_path,
