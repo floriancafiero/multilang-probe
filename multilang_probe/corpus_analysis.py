@@ -16,7 +16,7 @@ def find_texts_with_non_latin_characters(corpus_folder):
                     results[filename] = proportions
     return results
 
-def analyze_corpus_with_fasttext(corpus_folder):
+def analyze_corpus_with_fasttext(corpus_folder, k=2, model_path=None):
     results = {}
     for filename in os.listdir(corpus_folder):
         if filename.endswith(".txt"):
@@ -25,7 +25,9 @@ def analyze_corpus_with_fasttext(corpus_folder):
                 for line in file:
                     text = line.strip()
                     if text:
-                        detected_lang = detect_language_fasttext(text)
+                        detected_lang = detect_language_fasttext(
+                            text, k=k, model_path=model_path
+                        )
                         results.setdefault(filename, []).append(detected_lang)
     return results
 
@@ -42,7 +44,15 @@ def calculate_language_proportions(results):
         aggregated_results[filename] = proportions
     return aggregated_results
 
-def extract_passages_improved(results, target_language, corpus_folder, threshold=70, min_length=10):
+def extract_passages_improved(
+    results,
+    target_language,
+    corpus_folder,
+    threshold=70,
+    min_length=10,
+    k=2,
+    model_path=None,
+):
     language_passages = {}
     for filename, lang_lines in results.items():
         file_path = os.path.join(corpus_folder, filename)
@@ -51,7 +61,9 @@ def extract_passages_improved(results, target_language, corpus_folder, threshold
             for idx, line in enumerate(file, start=1):
                 text = line.strip()
                 if len(text) >= min_length:
-                    detected_lang = detect_language_fasttext(text)
+                    detected_lang = detect_language_fasttext(
+                        text, k=k, model_path=model_path
+                    )
                     langs = [lang_prob.split(": ") for lang_prob in detected_lang.split(", ")]
                     for lang, prob in langs:
                         if lang == target_language and float(prob.strip('%')) >= threshold:
@@ -78,7 +90,15 @@ def filter_passages_by_character_types(corpus_folder, character_types, min_lengt
                 filtered_passages[filename] = passages
     return filtered_passages
 
-def filter_passages_by_language(results, target_languages, corpus_folder, threshold=70, min_length=10):
+def filter_passages_by_language(
+    results,
+    target_languages,
+    corpus_folder,
+    threshold=70,
+    min_length=10,
+    k=2,
+    model_path=None,
+):
     filtered_passages = {}
     for filename, lang_lines in results.items():
         file_path = os.path.join(corpus_folder, filename)
@@ -87,7 +107,9 @@ def filter_passages_by_language(results, target_languages, corpus_folder, thresh
             for idx, line in enumerate(file, start=1):
                 text = line.strip()
                 if len(text) >= min_length:
-                    detected_lang = detect_language_fasttext(text)
+                    detected_lang = detect_language_fasttext(
+                        text, k=k, model_path=model_path
+                    )
                     langs = [lang_prob.split(": ") for lang_prob in detected_lang.split(", ")]
                     for lang, prob in langs:
                         if lang in target_languages and float(prob.strip('%')) >= threshold:
