@@ -1,8 +1,7 @@
-try:
-    import fasttext
-except ImportError:
-    raise ImportError(
-        "Le module fasttext est requis. Installez-le avec :\n"
-        "pip install multilang-probe[fasttext]"
-    )
-# a voir
+"""Multilang-probe package."""
+
+__all__ = [
+    "character_detection",
+    "corpus_analysis",
+    "language_detection",
+]

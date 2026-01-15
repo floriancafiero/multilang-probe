@@ -46,13 +46,27 @@ Character script proportions:
 
 ### Language Detection:
 - Identify top languages in text using Facebook's FastText pre-trained model.
+- Install the package from PyPI:
+
+```bash
+pip install multilang-probe
+```
+
+- Download the model once (example command):
+
+```bash
+curl -L -o lid.176.bin https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
+```
+
+- Place `lid.176.bin` in your working directory, set `MULTILANG_PROBE_MODEL_PATH`,
+  or pass a `model_path` argument (the model file is not bundled with the PyPI package).
 
 #### Example: Language Detection
 ```python
-from charlang_detect.language_detection import detect_language_fasttext
+from multilang_probe.language_detection import detect_language_fasttext
 
 text = "Ceci est un texte en français."
-languages = detect_language_fasttext(text)
+languages = detect_language_fasttext(text, model_path="path/to/lid.176.bin")
 print(languages)
 # Output example: "fr: 99.2%, en: 0.8%"
 ```
@@ -66,7 +80,7 @@ print(languages)
 
 #### Example: Analyze and Detect Multilingual Passages
 ```python
-from charlang_detect.corpus_analysis import analyze_corpus_with_fasttext
+from multilang_probe.corpus_analysis import analyze_corpus_with_fasttext
 
 folder_path = "path/to/corpus/"
 results = analyze_corpus_with_fasttext(folder_path)
@@ -80,7 +94,7 @@ for filename, langs in results.items():
 
 #### Example: Extract Passages by Language with Threshold
 ```python
-from charlang_detect.corpus_analysis import filter_passages_by_language
+from multilang_probe.corpus_analysis import filter_passages_by_language
 
 folder_path = "path/to/corpus/"
 target_languages = ["fr", "en"]
