@@ -137,6 +137,26 @@ multilang-probe analyze-corpus --folder path/to/corpus --model-path path/to/lid.
 multilang-probe filter-by-language --folder path/to/corpus --languages fr,en --threshold 70 --model-path path/to/lid.176.bin
 ```
 
+You can also tune false-positive behavior by aggregating multiple lines into blocks
+and enforcing a minimum margin between top-1 and top-2 predictions:
+
+```bash
+multilang-probe analyze-corpus \
+  --folder path/to/corpus \
+  --block-size 3 \
+  --min-length 120 \
+  --model-path path/to/lid.176.bin
+```
+
+```bash
+multilang-probe filter-by-language \
+  --folder path/to/corpus \
+  --languages fr,en \
+  --threshold 85 \
+  --min-margin 15 \
+  --model-path path/to/lid.176.bin
+```
+
 ### Corpus Analysis:
 - Analyze all `.txt` files in a folder to detect multilingual passages and language distributions.
 - **Character-based filtering**: Identify and filter text lines containing specific character sets (e.g., Japanese, Cyrillic, Arabic).
