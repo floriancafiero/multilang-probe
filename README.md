@@ -8,7 +8,6 @@ A Python package for analyzing multilingual text.
 
 **multilang-probe** is a toolkit designed to classify character sets, detect languages in text files, and extract specific multilingual passages. It supports character detection for a wide range of writing systems using Unicode script properties (e.g., Latin, Japanese, Cyrillic, Arabic, Devanagari, and more). Additionally, it leverages the FastText model for robust language detection. The Zenodo DOI for this release is [10.5281/zenodo.14520665](https://doi.org/10.5281/zenodo.14520665).
 
-Whether you are analyzing large corpora or extracting specific language data, **multilang-probe** simplifies the process with an easy-to-use API.
 
 ## Features
 
