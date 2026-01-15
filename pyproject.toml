@@ -17,5 +17,9 @@ classifiers = [
 dependencies = [
     "fasttext>=0.8.20",  # Allow any version beyond 0.8.20
     "pybind11",          # No strict version unless required
+    "matplotlib",
     "regex"              # Allow latest versions
 ]
+
+[project.scripts]
+multilang-probe = "multilang_probe.cli:main"
