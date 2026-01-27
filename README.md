@@ -216,7 +216,7 @@ for filename, passages in filtered.items():
 
 This project is licensed under the MIT License. While the MIT License allows unrestricted use, modification, and distribution of this software, I kindly request that proper credit be given when this project is used in academic, research, or published work. For citation purposes, please refer to the following:
 
-**CAFIERO Florian**, *'multilang-probe'*, 2024, [https://github.com/floriancafiero/multilang-probe].
+**CAFIERO Florian**, *'multilang-probe'*, 2026, [https://github.com/floriancafiero/multilang-probe].
 
 ## Contributing
 
@@ -231,4 +231,5 @@ Email: florian.cafiero@chartes.psl.eu
 ## Future Features
 
 - Support for other pre-trained language models (e.g., spaCy).
-- CLI (Command-Line Interface) for easy usage without writing code.
+- Support for other languages
+- Support for code detection
