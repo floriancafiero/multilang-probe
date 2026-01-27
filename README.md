@@ -82,6 +82,20 @@ result = detect_mathematical_language(text, threshold=1.0)
 print(result)
 ```
 
+### Script and Math Filtering:
+- Remove or extract characters from specific scripts (and optionally math symbols).
+
+#### Example: Script/Math Filtering
+```python
+from multilang_probe.text_filtering import remove_scripts_and_math, extract_scripts_and_math
+
+text = "Hello Привет ∑ مرحبا"
+cleaned = remove_scripts_and_math(text, scripts=["cyrillic"], remove_math=True)
+extracted = extract_scripts_and_math(text, scripts=["arabic"], include_math=True)
+print(cleaned)
+print(extracted)
+```
+
 ### Visualizations:
 - Generate simple bar charts for script and language proportions.
 
@@ -119,6 +133,14 @@ multilang-probe detect-language --text "Ceci est un texte en français." --model
 
 ```bash
 multilang-probe detect-math --text "x^2 + y^2 = r^2" --threshold 1.0
+```
+
+```bash
+multilang-probe remove-scripts --text "Hello Привет ∑" --scripts cyrillic --remove-math
+```
+
+```bash
+multilang-probe extract-scripts --text "مرحبا 1+1=2" --scripts arabic --include-math
 ```
 
 ```bash
