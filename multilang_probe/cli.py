@@ -12,7 +12,9 @@ from .corpus_analysis import (
     filter_passages_by_language,
 )
 from .language_detection import detect_language_fasttext
+from .code_detection import detect_code_like_language
 from .math_detection import detect_mathematical_language
+from .text_filtering import extract_scripts_and_math, remove_scripts_and_math
 from .visualization import plot_language_proportions, plot_script_proportions
 
 
@@ -73,6 +75,18 @@ def build_parser():
         type=float,
         default=1.0,
         help="Threshold percentage to flag mathematical language.",
+    )
+
+    code_parser = subparsers.add_parser(
+        "detect-code", help="Detect code-like language based on symbol density."
+    )
+    code_parser.add_argument("--text", help="Text to analyze.")
+    code_parser.add_argument("--file", help="Path to a UTF-8 text file.")
+    code_parser.add_argument(
+        "--threshold",
+        type=float,
+        default=1.0,
+        help="Threshold percentage to flag code-like language.",
     )
 
     visualize_scripts_parser = subparsers.add_parser(
@@ -202,26 +216,73 @@ def build_parser():
         "--model-path", help="Path to lid.176.bin (or set MULTILANG_PROBE_MODEL_PATH)."
     )
 
-    extract_parser = subparsers.add_parser(
+    extract_lang_parser = subparsers.add_parser(
         "extract-language", help="Extract passages for a single language."
     )
-    extract_parser.add_argument("--folder", required=True, help="Corpus folder path.")
-    extract_parser.add_argument("--language", required=True, help="Target language code.")
-    extract_parser.add_argument(
+    extract_lang_parser.add_argument("--folder", required=True, help="Corpus folder path.")
+    extract_lang_parser.add_argument(
+        "--language", required=True, help="Target language code."
+    )
+    extract_lang_parser.add_argument(
         "--threshold", type=float, default=70, help="Confidence threshold (0-100)."
     )
-    extract_parser.add_argument(
+    extract_lang_parser.add_argument(
         "--min-margin",
         type=float,
         default=0,
         help="Minimum probability margin between top-1 and top-2 predictions.",
     )
-    extract_parser.add_argument(
+    extract_lang_parser.add_argument(
         "--min-length", type=int, default=10, help="Minimum line length."
     )
-    extract_parser.add_argument("--k", type=int, default=2, help="Top-k languages.")
-    extract_parser.add_argument(
+    extract_lang_parser.add_argument("--k", type=int, default=2, help="Top-k languages.")
+    extract_lang_parser.add_argument(
         "--model-path", help="Path to lid.176.bin (or set MULTILANG_PROBE_MODEL_PATH)."
+    )
+
+    remove_parser = subparsers.add_parser(
+        "remove-scripts", help="Remove characters from specific scripts or math symbols."
+    )
+    remove_parser.add_argument("--text", help="Text to analyze.")
+    remove_parser.add_argument("--file", help="Path to a UTF-8 text file.")
+    remove_parser.add_argument(
+        "--scripts",
+        help="Comma-separated list of script names to remove (e.g., cyrillic, greek).",
+    )
+    remove_parser.add_argument(
+        "--remove-math",
+        action="store_true",
+        help="Remove mathematical symbols from the text.",
+    )
+    remove_parser.add_argument(
+        "--remove-code",
+        action="store_true",
+        help="Remove code-like tokens from the text.",
+    )
+
+    extract_scripts_parser = subparsers.add_parser(
+        "extract-scripts", help="Extract characters from specific scripts or math symbols."
+    )
+    extract_scripts_parser.add_argument("--text", help="Text to analyze.")
+    extract_scripts_parser.add_argument("--file", help="Path to a UTF-8 text file.")
+    extract_scripts_parser.add_argument(
+        "--scripts",
+        help="Comma-separated list of script names to extract (e.g., arabic, han).",
+    )
+    extract_scripts_parser.add_argument(
+        "--include-math",
+        action="store_true",
+        help="Include mathematical symbols in the extracted output.",
+    )
+    extract_scripts_parser.add_argument(
+        "--include-code",
+        action="store_true",
+        help="Include code-like tokens in the extracted output.",
+    )
+    extract_scripts_parser.add_argument(
+        "--keep-whitespace",
+        action="store_true",
+        help="Keep whitespace in the extracted output.",
     )
 
     return parser
@@ -245,6 +306,10 @@ def main():
     if args.command == "detect-math":
         text = _load_text(args.text, args.file)
         _print_json(detect_mathematical_language(text, threshold=args.threshold))
+        return
+    if args.command == "detect-code":
+        text = _load_text(args.text, args.file)
+        _print_json(detect_code_like_language(text, threshold=args.threshold))
         return
 
     if args.command == "visualize-scripts":
@@ -341,6 +406,29 @@ def main():
                 model_path=args.model_path,
             )
         )
+        return
+
+    if args.command == "remove-scripts":
+        text = _load_text(args.text, args.file)
+        scripts = [item.strip() for item in args.scripts.split(",")] if args.scripts else []
+        filtered_text = remove_scripts_and_math(
+            text, scripts=scripts, remove_math=args.remove_math, remove_code=args.remove_code
+        )
+        _print_json({"text": filtered_text})
+        return
+
+    if args.command == "extract-scripts":
+        text = _load_text(args.text, args.file)
+        scripts = [item.strip() for item in args.scripts.split(",")] if args.scripts else []
+        extracted_text = extract_scripts_and_math(
+            text,
+            scripts=scripts,
+            include_math=args.include_math,
+            include_code=args.include_code,
+            keep_whitespace=args.keep_whitespace,
+        )
+        _print_json({"text": extracted_text})
+        return
 
 
 if __name__ == "__main__":

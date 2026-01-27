@@ -82,6 +82,32 @@ result = detect_mathematical_language(text, threshold=1.0)
 print(result)
 ```
 
+### Code-Like Language Detection:
+- Identify text with a high density of code symbols and keywords.
+
+#### Example: Code Detection
+```python
+from multilang_probe.code_detection import detect_code_like_language
+
+text = "def add(a, b): return a + b"
+result = detect_code_like_language(text, threshold=1.0)
+print(result)
+```
+
+### Script and Math Filtering:
+- Remove or extract characters from specific scripts (and optionally math/code tokens).
+
+#### Example: Script/Math Filtering
+```python
+from multilang_probe.text_filtering import remove_scripts_and_math, extract_scripts_and_math
+
+text = "Hello Привет ∑ def add(a, b): return a + b"
+cleaned = remove_scripts_and_math(text, scripts=["cyrillic"], remove_math=True, remove_code=True)
+extracted = extract_scripts_and_math(text, scripts=["arabic"], include_math=True, include_code=True)
+print(cleaned)
+print(extracted)
+```
+
 ### Visualizations:
 - Generate simple bar charts for script and language proportions.
 
@@ -119,6 +145,18 @@ multilang-probe detect-language --text "Ceci est un texte en français." --model
 
 ```bash
 multilang-probe detect-math --text "x^2 + y^2 = r^2" --threshold 1.0
+```
+
+```bash
+multilang-probe detect-code --text "def add(a, b): return a + b" --threshold 1.0
+```
+
+```bash
+multilang-probe remove-scripts --text "Hello Привет ∑ def add(a, b): return a + b" --scripts cyrillic --remove-math --remove-code
+```
+
+```bash
+multilang-probe extract-scripts --text "مرحبا 1+1=2" --scripts arabic --include-math --include-code
 ```
 
 ```bash
