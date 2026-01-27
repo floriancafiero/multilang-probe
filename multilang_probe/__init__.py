@@ -5,5 +5,6 @@ __all__ = [
     "corpus_analysis",
     "language_detection",
     "math_detection",
+    "text_filtering",
     "visualization",
 ]
